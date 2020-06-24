@@ -146,6 +146,24 @@ dpkg_list(
         "libpcre3",
         "libbz2-1.0",
         "liblzma5",
+
+        #PHP
+        "libsystemd0",
+        "libselinux1",
+        "libapparmor1",
+        "libbsd0",
+        "libmagic-mgc",
+        "libmagic1",
+        "libxml2",
+        "liblzma5",
+        "liblz4-1",
+        "libicu57",
+        "php7.0-common",
+        "php7.0-cli",
+        "php7.0-json",
+        "php7.0-opcache",
+        "php7.0-readline",
+        "php7.0-fpm",
     ],
     # Takes the first package found: security updates should go first
     # If there was a security fix to a package before the stable release, this will find
@@ -398,6 +416,24 @@ dpkg_list(
         "libpcre3",
         "libbz2-1.0",
         "liblzma5",
+
+        #PHP
+        "libargon2-1",
+        "libicu63",
+        "libpcre2-8-0",
+        "libsodium23",
+        "php7.3-cli",
+        "php7.3-common",
+        "php7.3-json",
+        "php7.3-opcache",
+        "php7.3-readline",
+        "libssl1.1",
+        "libbsd0",
+        "libmagic-mgc",
+        "libmagic1",
+        "libxml2",
+        "liblzma5",
+        "zlib1g",
     ],
     # Takes the first package found: security updates should go first
     # If there was a security fix to a package before the stable release, this will find
