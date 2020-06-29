@@ -1,9 +1,66 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
+load("@io_bazel_rules_docker//container:container.bzl", "container_layer")
 load("@io_bazel_rules_docker//contrib:test.bzl", "container_test")
 load("@package_bundle//file:packages.bzl", "packages")
+load("@io_bazel_rules_docker//contrib:passwd.bzl", "passwd_entry", "passwd_file")
+load("@io_bazel_rules_docker//contrib:group.bzl", "group_entry", "group_file")
+load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@package_bundle_debian10//file:packages.bzl", packages_debian10 = "packages")
+
+WWW_DATA = 33
+
+# Create a passwd file with a nonroot user and uid.
+passwd_entry(
+    name = "www-data_user",
+    info = "ww-data",
+    uid = WWW_DATA,
+    gid = WWW_DATA,
+    home = "/var/www",
+    username = "www-data",
+)
+
+passwd_file(
+    name = "passwd",
+    entries = [
+        ":www-data_user",
+    ],
+)
+
+group_entry(
+    name = "www-data_group",
+    groupname = "www-data",
+    gid = WWW_DATA,
+    users = [ "www-data" ],
+)
+
+group_file(
+    name = "group",
+    entries = [
+        ":www-data_group",
+    ],
+)
+
+pkg_tar(
+    name = "passwd_tar",
+    srcs = [":passwd"],
+    mode = "0644",
+    package_dir = "etc",
+)
+
+pkg_tar(
+    name = "group_tar",
+    srcs = [":group"],
+    mode = "0644",
+    package_dir = "etc",
+)
+
+container_layer(
+    name = "php_run_dir",
+    empty_dirs = ["/run/php"],
+    mode = "755",
+)
 
 DISTRO_PACKAGES = {
     "_debian9": packages,
@@ -38,6 +95,8 @@ DISTRO_VERSION = {
 [[container_image(
     name = ("php-fpm" if (not mode) else mode[1:]) + distro_suffix,
     base = "//experimental/php" + (mode if mode else ":php") + distro_suffix,
+    tars = [":passwd_tar", ":group_tar"],
+    layers = ["php_run_dir"],
     debs = [
         DISTRO_PACKAGES[distro_suffix]["libgpg-error0"],
         DISTRO_PACKAGES[distro_suffix]["libgcrypt20"],
@@ -53,6 +112,7 @@ DISTRO_VERSION = {
     ] + [DISTRO_PACKAGES[distro_suffix][deb] for deb in DISTRO_DEBS[distro_suffix]],
     entrypoint = [
         "/usr/sbin/php-fpm" + DISTRO_VERSION[distro_suffix],
+        "-F"
     ],
     env = {"LANG": "C.UTF-8"},
     symlinks = {
