@@ -82,8 +82,6 @@ DISTRO_DEBS = {
         "php7.3-fpm",
         "libapparmor1",
         "mime-support",
-        #bzip2 file libapparmor1 libargon2-1 libbsd0 libedit2 libgpm2 libicu63 libmagic-mgc libmagic1 libncurses6 libpcre2-8-0 libsodium23 libssl1.1 libxml2 mime-support php-common php7.3-cli php7.3-common php7.3-json php7.3-opcache
-  #php7.3-readline psmisc sensible-utils ucf xz-utils
     ],
 }
 
