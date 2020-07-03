@@ -56,6 +56,13 @@ pkg_tar(
     package_dir = "etc",
 )
 
+pkg_tar(
+    name = "php_fpm_www_pool",
+    srcs = ["conf/www.conf"],
+    mode = "0644",
+    package_dir = "etc/php/7.3/fpm/pool.d/"
+)
+
 container_layer(
     name = "php_run_dir",
     empty_dirs = ["/run/php"],
@@ -93,7 +100,7 @@ DISTRO_VERSION = {
 [[container_image(
     name = ("php-fpm" if (not mode) else mode[1:]) + distro_suffix,
     base = "//experimental/php" + (mode if mode else ":php") + distro_suffix,
-    tars = [":passwd_tar", ":group_tar"],
+    tars = [":passwd_tar", ":group_tar", ":php_fpm_www_pool"],
     layers = ["php_run_dir"],
     debs = [
         DISTRO_PACKAGES[distro_suffix]["libgpg-error0"],
