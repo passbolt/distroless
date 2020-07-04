@@ -400,9 +400,7 @@ dpkg_list(
         "liblzma5",
 
         #PHP
-        "libapparmor1",
-        "libsystemd0",
-        "liblz4-1",
+
         # PHP-CLI + json + opcache and common extensions
         "libargon2-1",
         "libbsd0",
@@ -423,6 +421,18 @@ dpkg_list(
         "php7.3-opcache",
         "php7.3-readline",
         "zlib1g",
+
+        # PHP-FPM
+        "libapparmor1",
+        "libgcrypt20",
+        "libgpg-error0",
+        "liblz4-1",
+        "libsystemd0",
+        "mime-support",
+        "php7.3-fpm",
+
+        # PHP-MYSQL
+        "php7.3-mysql",
 
     ],
     # Takes the first package found: security updates should go first
