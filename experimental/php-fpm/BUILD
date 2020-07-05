@@ -7,9 +7,48 @@ load("@package_bundle_debian10//file:packages.bzl", "packages")
 load("@io_bazel_rules_docker//contrib:passwd.bzl", "passwd_entry", "passwd_file")
 load("@io_bazel_rules_docker//contrib:group.bzl", "group_entry", "group_file")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
+load(":php-extensions.bzl", "PHP_VERSION", "php_extensions")
 
-PHP_VERSION = "7.3"
 WWW_DATA = 33
+
+# Dictionary that contains all the enabled extensions, their priorities and source paths
+PHP_EXT = {
+    'calendar': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/calendar.ini'},
+    'ctype': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/ctype.ini'},
+    'dom': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/dom.ini'},
+    'exif': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/exif.ini'},
+    'fileinfo': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/fileinfo.ini'},
+    'ftp': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/ftp.ini'},
+    'gd': { 'prio': '20', 'path': '/usr/share/php7.3-gd/gd/gd.ini'},
+    'gettext': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/gettext.ini'},
+    'iconv': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/iconv.ini'},
+    'json': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/json.ini'},
+    'mbstring': { 'prio': '20', 'path': '/usr/share/php7.3-mbstring/mbstring/mbstring.ini'},
+    'mysqlnd': { 'prio': '20', 'path': '/usr/share/php7.3-mysql/mysql/mysqlnd.ini'},
+    'opcache': { 'prio': '10', 'path': '/usr/share/php7.3-opcache/opcache/opcache.ini'},
+    'pdo_mysql': { 'prio': '20', 'path': '/usr/share/php7.3-mysql/mysql/pdo_mysql.ini'},
+    'pdo': { 'prio': '10', 'path': '/usr/share/php7.3-common/common/pdo.ini'},
+    'phar': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/phar.ini'},
+    'posix': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/posix.ini'},
+    'readline': { 'prio': '20', 'path': '/usr/share/php7.3-readline/readline/readline.ini'},
+    'shmop': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/shmop.ini'},
+    'simplexml': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/simplexml.ini'},
+    'sockets': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/sockets.ini'},
+    'sysvmsg': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/sysvmsg.ini'},
+    'sysvsem': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/sysvsem.ini'},
+    'sysvshm': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/sysvshm.ini'},
+    'tokenizer': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/tokenizer.ini'},
+    'wddx': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/wddx.ini'},
+    'xml': { 'prio': '15', 'path': '/usr/share/php7.3-xml/xml/xml.ini'},
+    'xmlreader': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/xmlreader.ini'},
+    'xmlwriter': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/xmlwriter.ini'},
+    'xsl': { 'prio': '20', 'path': '/usr/share/php7.3-xml/xml/xsl.ini'},
+}
+
+PHP_LINKS = {
+        "/usr/bin/php": "/usr/bin/php" + PHP_VERSION,
+        "/usr/sbin/php-fpm": "/usr/sbin/php-fpm" + PHP_VERSION
+}
 
 distro_suffix = "_debian10"
 
@@ -79,27 +118,7 @@ pkg_tar(
     package_dir = "etc/php/" + PHP_VERSION + "/fpm/pool.d/"
 )
 
-PHP_EXT = {
-    'calendar': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/calendar.ini'},
-    'ctype': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'exif': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'fileinfo': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'ftp': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'gettext': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'iconv': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'json': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'opcache': { 'prio': '10', 'package': '/usr/share/php7.3-opcache/opcache.ini'},
-    'pdo': { 'prio': '10', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'phar': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'posix': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'readline': { 'prio': '20', 'package': '/usr/share/php7.3-readline/readline.ini'},
-    'shmop': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'sockets': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'sysvmsg': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'sysvsem': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'sysvshm': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    'tokenizer': { 'prio': '20', 'package': '/usr/share/php7.3-common/common/calendar.ini'},
-    }
+
 
 # Builds php-cli image with base extensions: common + json + opcache + readline
 
@@ -113,24 +132,45 @@ PHP_EXT = {
         packages["libargon2-1"],
         packages["libbsd0"],
         packages["libedit2"],
+        packages["libexpat1"],
+        packages["libfontconfig1"],
+        packages["libfreetype6"],
         packages["libgcrypt20"],
+        packages["libgd3"],
         packages["libgpg-error0"],
         packages["libicu63"],
+        packages["libjbig0"],
+        packages["libjpeg62-turbo"],
         packages["liblz4-1"],
         packages["liblzma5"],
         packages["libmagic1"],
         packages["libmagic-mgc"],
         packages["libncurses6"],
         packages["libpcre2-8-0"],
+        packages["libpng16-16"],
         packages["libsodium23"],
         packages["libssl1.1"],
         packages["libsystemd0"],
+        packages["libtiff5"],
         packages["libtinfo6"],
+        packages["libuuid1"],
+        packages["libwebp6"],
+        packages["libx11-6"],
+        packages["libx11-data"],
+        packages["libxau6"],
+        packages["libxcb1"],
+        packages["libxdmcp6"],
         packages["libxml2"],
+        packages["libxpm4"],
+        packages["libxslt1.1"],
+        packages["libzstd1"],
         packages["mime-support"],
+        packages["php7.3-mbstring"],
+        packages["php7.3-xml"],
         packages["php" + PHP_VERSION + "-cli"],
         packages["php" + PHP_VERSION + "-common"],
         packages["php" + PHP_VERSION + "-fpm"],
+        packages["php" + PHP_VERSION + "-gd"],
         packages["php" + PHP_VERSION + "-json"],
         packages["php" + PHP_VERSION + "-mysql"],
         packages["php" + PHP_VERSION + "-opcache"],
@@ -143,50 +183,7 @@ PHP_EXT = {
         "-O"
     ],
     env = {"LANG": "C.UTF-8"},
-    symlinks = {
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/10-opcache.ini": "/usr/share/php" + PHP_VERSION + "-opcache/opcache/opcache.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-calendar.ini": "/usr/share/php" + PHP_VERSION + "-common/common/calendar.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-ctype.ini": "/usr/share/php" + PHP_VERSION + "-common/common/ctype.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-exif.ini": "/usr/share/php" + PHP_VERSION + "-common/common/exif.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-fileinfo.ini": "/usr/share/php" + PHP_VERSION + "-common/common/fileinfo.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-ftp.ini": "/usr/share/php" + PHP_VERSION + "-common/common/ftp.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-gettext.ini": "/usr/share/php" + PHP_VERSION + "-common/common/gettext.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-iconv.ini": "/usr/share/php" + PHP_VERSION + "-common/common/iconv.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-json.ini": "/usr/share/php" + PHP_VERSION + "-json/json/json.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-pdo.ini": "/usr/share/php" + PHP_VERSION + "-common/common/pdo.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-phar.ini": "/usr/share/php" + PHP_VERSION + "-common/common/phar.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-posix.ini": "/usr/share/php" + PHP_VERSION + "-common/common/posix.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-readline.ini": "/usr/share/php" + PHP_VERSION + "-readline/readline/readline.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-shmop.ini": "/usr/share/php" + PHP_VERSION + "-common/common/shmop.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-sockets.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sockets.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-sysvmsg.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvmsg.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-sysvsem.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvsem.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-sysvshm.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvshm.ini",
-        "/etc/php/" + PHP_VERSION + "/cli/conf.d/20-tokenizer.ini": "/usr/share/php" + PHP_VERSION + "-common/common/tokenizer.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/10-opcache.ini": "/usr/share/php" + PHP_VERSION + "-opcache/opcache/opcache.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-calendar.ini": "/usr/share/php" + PHP_VERSION + "-common/common/calendar.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-ctype.ini": "/usr/share/php" + PHP_VERSION + "-common/common/ctype.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-exif.ini": "/usr/share/php" + PHP_VERSION + "-common/common/exif.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-fileinfo.ini": "/usr/share/php" + PHP_VERSION + "-common/common/fileinfo.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-ftp.ini": "/usr/share/php" + PHP_VERSION + "-common/common/ftp.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-gettext.ini": "/usr/share/php" + PHP_VERSION + "-common/common/gettext.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-iconv.ini": "/usr/share/php" + PHP_VERSION + "-common/common/iconv.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-json.ini": "/usr/share/php" + PHP_VERSION + "-json/json/json.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-pdo.ini": "/usr/share/php" + PHP_VERSION + "-common/common/pdo.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-phar.ini": "/usr/share/php" + PHP_VERSION + "-common/common/phar.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-posix.ini": "/usr/share/php" + PHP_VERSION + "-common/common/posix.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-readline.ini": "/usr/share/php" + PHP_VERSION + "-readline/readline/readline.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-shmop.ini": "/usr/share/php" + PHP_VERSION + "-common/common/shmop.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-sockets.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sockets.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-sysvmsg.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvmsg.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-sysvsem.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvsem.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-sysvshm.ini": "/usr/share/php" + PHP_VERSION + "-common/common/sysvshm.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-tokenizer.ini": "/usr/share/php" + PHP_VERSION + "-common/common/tokenizer.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-mysqlnd.ini": "/usr/share/php" + PHP_VERSION + "-mysql/mysql/mysqlnd.ini",
-        "/etc/php/" + PHP_VERSION + "/fpm/conf.d/20-pdo_mysql.ini": "/usr/share/php" + PHP_VERSION + "-mysql/mysql/pdo_mysql.ini",
-        "/usr/bin/php": "/usr/bin/php" + PHP_VERSION,
-        "/usr/sbin/php-fpm": "/usr/sbin/php-fpm" + PHP_VERSION
-    },
+    symlinks = dict(php_extensions(PHP_EXT).items() + PHP_LINKS.items()),
 ) for mode in [
     "",
     ":debug",

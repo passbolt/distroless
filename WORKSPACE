@@ -434,6 +434,33 @@ dpkg_list(
         # PHP-MYSQL
         "php7.3-mysql",
 
+        # PHP-GD
+        "libexpat1",
+        "libfontconfig1",
+        "libfreetype6",
+        "libgd3",
+        "libjbig0",
+        "libjpeg62-turbo",
+        "libpng16-16",
+        "libtiff5",
+        "libuuid1",
+        "libwebp6",
+        "libx11-6",
+        "libx11-data",
+        "libxau6",
+        "libxcb1",
+        "libxdmcp6",
+        "libxpm4",
+        "libzstd1",
+        "php7.3-gd",
+
+        # PHP-MBSTRING
+        "php7.3-mbstring",
+
+        # PHP-XML
+        "php7.3-xml",
+        "libxslt1.1",
+
     ],
     # Takes the first package found: security updates should go first
     # If there was a security fix to a package before the stable release, this will find
