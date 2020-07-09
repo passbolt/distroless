@@ -113,12 +113,10 @@ pkg_tar(
 
 pkg_tar(
     name = "php_fpm_www_pool",
-    srcs = ["conf/www.conf"],
+    srcs = ["conf/zz-www.conf"],
     mode = "0644",
     package_dir = "etc/php/" + PHP_VERSION + "/fpm/pool.d/"
 )
-
-
 
 # Builds php-cli image with base extensions: common + json + opcache + readline
 
