@@ -176,7 +176,7 @@ pkg_tar(
         packages["zlib1g"],
     ],
     entrypoint = [
-        "/usr/sbin/php-fpm" + PHP_VERSION,
+        "/usr/sbin/php-fpm",
         "-F",
         "-O"
     ],
