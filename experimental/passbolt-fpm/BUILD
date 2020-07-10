@@ -2,9 +2,8 @@ package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@io_bazel_rules_docker//contrib:test.bzl", "container_test")
-load("@package_bundle//file:packages.bzl", "packages")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
-load("@package_bundle_debian10//file:packages.bzl", packages_debian10 = "packages")
+load("@package_bundle_debian10//file:packages.bzl", "packages")
 load("//experimental/php-fpm:php-extensions.bzl", "PHP_VERSION", "php_extensions")
 
 PHP_EXT = {
@@ -17,21 +16,21 @@ PHP_EXT = {
 [container_image(
     name = ("passbolt-fpm" if (not mode) else mode[1:]) + PHP_VERSION,
     base = "//experimental/php-fpm" + (mode if  mode else ":php-fpm") + PHP_VERSION,
-    symlinks = php_extensions(PHP_EXT),
+    symlinks = dict(php_extensions(PHP_EXT).items() + {"/var/log/passbolt/error.log" : "/dev/stderr"}.items()),
     debs = [
-        packages_debian10["gnupg-l10n"],
-        packages_debian10["gpg"],
-        packages_debian10["gpg-agent"],
-        packages_debian10["libassuan0"],
-        packages_debian10["libbz2-1.0"],
-        packages_debian10["libgpgme11"],
-        packages_debian10["libnpth0"],
-        packages_debian10["libreadline7"],
-        packages_debian10["libsqlite3-0"],
-        packages_debian10["passbolt-ce-server"],
-        packages_debian10["php-gnupg"],
-        packages_debian10["php" + PHP_VERSION + "-intl"],
-        packages_debian10["php-apcu"]
+        packages["gnupg-l10n"],
+        packages["gpg"],
+        packages["gpg-agent"],
+        packages["libassuan0"],
+        packages["libbz2-1.0"],
+        packages["libgpgme11"],
+        packages["libnpth0"],
+        packages["libreadline7"],
+        packages["libsqlite3-0"],
+        packages["passbolt-ce-server"],
+        packages["php-gnupg"],
+        packages["php" + PHP_VERSION + "-intl"],
+        packages["php-apcu"]
     ],
 ) for mode in [
     "",
