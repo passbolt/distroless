@@ -511,8 +511,11 @@ dpkg_list(
 
         #bash
         "bash",
-        "coreutils"
-        "libselinux"
+        "coreutils",
+        "libselinux1",
+        "grep",
+        "dash",
+        "libpcre3"
     ],
     sources = [
         "@debian10_security//file:Packages.json",
