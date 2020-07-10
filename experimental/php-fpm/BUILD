@@ -22,7 +22,7 @@ PHP_EXT = {
     'gd': { 'prio': '20', 'path': '/usr/share/php7.3-gd/gd/gd.ini'},
     'gettext': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/gettext.ini'},
     'iconv': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/iconv.ini'},
-    'json': { 'prio': '20', 'path': '/usr/share/php7.3-common/common/json.ini'},
+    'json': { 'prio': '20', 'path': '/usr/share/php7.3-json/json/json.ini'},
     'mbstring': { 'prio': '20', 'path': '/usr/share/php7.3-mbstring/mbstring/mbstring.ini'},
     'mysqlnd': { 'prio': '10', 'path': '/usr/share/php7.3-mysql/mysql/mysqlnd.ini'},
     'opcache': { 'prio': '10', 'path': '/usr/share/php7.3-opcache/opcache/opcache.ini'},
