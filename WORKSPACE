@@ -72,6 +72,7 @@ dpkg_src(
     sha256 = DEBIAN_STRETCH_SECURITY_SHA256,
 )
 
+
 dpkg_list(
     name = "package_bundle",
     packages = [
@@ -321,6 +322,13 @@ dpkg_src(
     sha256 = DEBIAN_BUSTER_SECURITY_SHA256,
 )
 
+dpkg_src(
+    name = "passbolt-ce-server",
+    package_prefix = "https://download.passbolt.com/ce/debian/",
+    packages_gz_url = "https://download.passbolt.com/ce/debian/dists/buster/stable/binary-amd64/Packages.gz",
+    sha256 = "6913b70dfbe6cf52095ad88263f8c55cc213f610bacfce16a0cc524db725ed7b",
+)
+
 dpkg_list(
     name = "package_bundle_debian10",
     packages = [
@@ -480,10 +488,31 @@ dpkg_list(
         "php7.3-xml",
         "libxslt1.1",
 
+        # PHP-APCU
+        "php-apcu",
+
+        # PHP-gnupg
+        "gnupg-l10n",
+        "gpg",
+        "gpg-agent",
+        "libassuan0",
+        "libbz2-1.0",
+        "libgpgme11",
+        "libnpth0",
+        "libreadline7",
+        "libsqlite3-0",
+        "php-gnupg",
+
+        # PHP-INTL
+        "php7.3-intl",
+
+        # passbolt-ce
+        "passbolt-ce-server",
     ],
     sources = [
         "@debian10_security//file:Packages.json",
         "@debian10_updates//file:Packages.json",
         "@debian10//file:Packages.json",
+        "@passbolt-ce-server//file:Packages.json",
     ],
 )
