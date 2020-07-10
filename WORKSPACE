@@ -508,6 +508,11 @@ dpkg_list(
 
         # passbolt-ce
         "passbolt-ce-server",
+
+        #bash
+        "bash",
+        "coreutils"
+        "libselinux"
     ],
     sources = [
         "@debian10_security//file:Packages.json",
