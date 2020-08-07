@@ -4,7 +4,8 @@ load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@io_bazel_rules_docker//contrib:test.bzl", "container_test")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
 load("@package_bundle_debian10//file:packages.bzl", "packages")
-load("//experimental/php-fpm:php-extensions.bzl", "PHP_VERSION", "php_extensions")
+
+PHP_VERSION = "7.3"
 
 [container_image(
     name = ("passbolt-cli" if (not mode) else mode[1:]) + PHP_VERSION,
