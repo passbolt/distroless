@@ -102,7 +102,7 @@
     "openjdk-11-jdk-headless": "11.0.8+10-1~deb10u1",
     "openjdk-11-jre-headless": "11.0.8+10-1~deb10u1",
     "openssl": "1.1.1d-0+deb10u3",
-    "passbolt-ce-server": "2.13.1-1",
+    "passbolt-ce-server": "2.13.5-1",
     "php-apcu": "5.1.17+4.0.11-1",
     "php-gnupg": "1.4.0-3",
     "php7.3-cli": "7.3.19-1~deb10u1",
