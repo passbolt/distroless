@@ -346,7 +346,7 @@ dpkg_src(
     name = "passbolt-ce-server",
     package_prefix = "https://download.passbolt.com/ce/debian/",
     packages_gz_url = "https://download.passbolt.com/ce/debian/dists/buster/stable/binary-amd64/Packages.gz",
-    sha256 = "6913b70dfbe6cf52095ad88263f8c55cc213f610bacfce16a0cc524db725ed7b",
+    sha256 = "dfc41bcb7703f62e554483d7eb3f432d426c1ba43f86ad73c0af7a247f3fbee3",
 )
 
 dpkg_list(
