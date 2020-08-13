@@ -9,7 +9,6 @@ load("//experimental/php-fpm:php-extensions.bzl", "php_extensions")
 PHP_VERSION = "7.3"
 
 PHP_EXT = {
-    'apcu': { 'prio': '20', 'path': '/etc/php/7.3/mods-available/apcu.ini'},
     'gnupg': { 'prio': '20', 'path': '/etc/php/7.3/mods-available/gnupg.ini'},
     'intl': { 'prio': '20', 'path': '/usr/share/php7.3-intl/intl/intl.ini'},
     'redis': { 'prio': '20', 'path': '/etc/php/7.3/mods-available/redis.ini' },
