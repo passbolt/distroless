@@ -3,7 +3,7 @@ package(default_visibility = ["//visibility:public"])
 load("@io_bazel_rules_docker//container:container.bzl", "container_image")
 load("@io_bazel_rules_docker//contrib:test.bzl", "container_test")
 load("@bazel_tools//tools/build_defs/pkg:pkg.bzl", "pkg_tar")
-load("@package_bundle_debian10//file:packages.bzl", "packages")
+load("@package_bundle_amd64_debian10//file:packages.bzl", "packages")
 
 PHP_VERSION = "7.3"
 
